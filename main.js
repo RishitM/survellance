@@ -1,4 +1,5 @@
-var status
+var objects=[] 
+var status=""
 var vid=""
 function preload(){
 vid=createVideo("video.mp4")
@@ -12,7 +13,17 @@ function setup(){
 function draw(){
 image(vid,0,0,400,400)
 if(status!=""){ 
-object_detector.detect(vid,gotResult) 
+object_detector.detect(vid,gotResult)
+for(i=0;i<objects.length;i++){
+   document.getElementById("status").innerHTML="Objects Detected"
+    document.getElementById("numbers").innerHTML= objects.length;
+percentage=floor(objects[i].confidence*100)
+ noFill()
+ stroke(9,45,7)
+ strokeWeight(3)
+text(objects[i].label + " " + percentage + "%" ,objects[i].x,objects[i].y)
+rect(objects[i].x,objects[i].y,objects[i].width,objects[i].height)
+} 
 }
 }
 function start(){
@@ -33,5 +44,11 @@ if(error){
 }
 else{
     console.log(results);
+     objects=results
+
+    }
 }
+function stop()
+{
+     vid.pause();	
 }
